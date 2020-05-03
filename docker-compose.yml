@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  controller:
+    build: ./controller
+    volumes:
+      - ./controller:/usr/local/ova/controller
+      - ./controller/dev-data:/var/ova/controller
+    ports:
+      - 8070:80
