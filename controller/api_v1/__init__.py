@@ -2,10 +2,10 @@ import markdown
 import simplejson as json
 import os
 
-from flask import Flask
+from flask import Flask, render_template
 from flask_restful import Resource, Api
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='../templates')
 api = Api(app)
 
 rootPath = os.path.dirname(app.root_path);
@@ -15,10 +15,11 @@ def index():
 	"""Show the documentation"""
 	# Open the readme file.
 	with open(rootPath + "/readme.md", 'r') as markdown_file:
-		# Parse the markdown and make some html tags.
-		# TODO: Make a html template for the markdown to go inside.
-		content = markdown_file.read()
-		return markdown.markdown(content, extensions=['toc'])
+		# Parse the markdown file.
+		markdown_parsed = markdown.markdown(markdown_file.read(), extensions=['toc', 'extra', 'codehilite'])
+
+		# Run the markdown through the template file.
+		return render_template("doc-page.html", title="readme.md", markdown = markdown_parsed)
 
 
 class AccessoryList(Resource):

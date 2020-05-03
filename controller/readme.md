@@ -1,28 +1,26 @@
 
 [TOC]
 
-# OVA Controller Overview
+# OVA Overview
 
 The OVA controller should be configured like any other linux program. through config files. This should feel seamless.
 
 OVA controller is split in three sub-projects.
 
-- **Controller**
+### Controller
 
-	Controls, tracks and manages the states of accessories. It can be updated and configured via the API.
+} Controls, tracks and manages the states of accessories. It can be updated and configured via the API.
 
-- **Accessory Interface**
+### Accessory Interface
 	
-	Used by any device connected to the local AP to update the state of the accessories controlled by the controller.
+} Used by any device connected to the local AP to update the state of the accessories controlled by the controller.
+} This is a webpage with javascript request that talk to the controller's API.
 
-	This is a webpage with javascript request that talk to the controller's API.
+### Controller Config Interface
 
-- **Controller Config Interface**
-
-	Used by privileged devices (mac or ip address?) to configure the Accessories. For example the head unit or a laptop plugged into the pi.
+} Used by privileged devices (mac or ip address?) to configure the Accessories. For example the head unit or a laptop plugged into the pi.
 	
-	Devices connected via the `usb0` interface automatically become privileged.
-
+} Devices connected via the `usb0` interface automatically become privileged.
 
 
 # API V1 Objects
@@ -49,11 +47,7 @@ A good example would be `spotlights-2` or `relay-h-bridge`. A bad example would 
 
 # API V1 Endpoints
 
-## Information about this ova controller
-
-### Definition
-
-`GET /about`
+## `GET /about`
 
 Get detailed information about this controller.
 
@@ -85,11 +79,7 @@ Get detailed information about this controller.
 }
 ```
 
-## List All Accessories.
-
-### Definition
-
-`GET /accessories`
+## `GET /accessories`
 
 List all the accessories currently configured with this ova-controller.
 
@@ -124,11 +114,12 @@ List all the accessories currently configured with this ova-controller.
 ]
 ```
 
-## Get a singular Accessory
+## `GET /accessories/{id}`
 
-### Definition
+Get a singular accessory with the specified id.
 
-`GET /accessories/<id>`
+## Arguments
+- `{id}` the uid of an accessory.
 
 ## Response
 
@@ -149,11 +140,9 @@ List all the accessories currently configured with this ova-controller.
 ```
 - `404 Not Found` the id does not exist.
 
-## Add a new Accessory
+## `PUT /accessories`
 
-### Definition
-
-`PUT /accessories`
+Creates a new accessory.
 
 ### Arguments
 
@@ -171,11 +160,12 @@ List all the accessories currently configured with this ova-controller.
 - `409 Conflict` the id has conflicted with another id.
 
 
-## Remove an existing Accessory
+## `DELETE /accessories/{id}`
 
-### Definition
+Delete an accessory with the provided id.
 
-`DELETE /accessories/<id>`
+### Arguments
+- `{id}` the uid of an accessory.
 
 ### Response
 
@@ -184,14 +174,12 @@ List all the accessories currently configured with this ova-controller.
 - `404 Not Found` the id does not exist.
 
 
-## Update an existing Accessory
+## `POST /accessories/{id}`
 
-### Definition
-
-`POST /accessories/<id>`
+Add update an existing accessory with the provided id.
 
 ### Arguments
-
+- `{id}` the uid of an accessory.
 - `"name":string` a friendly name used in the user interfaces.
 - `"icon":string` a URL to the icon used in the user interfaces.
 
@@ -201,13 +189,12 @@ List all the accessories currently configured with this ova-controller.
 - `404 Not Found` the id does not exist.
 
 
-## Get the state of an accessory
-
-### Definition
-
-`GET /accessories/<id>/state`
+## `GET /accessories/{id}/state`
 
 Get the sate of an accessory. The state is provided by the controller and varies from controller to controller.
+
+### Arguments
+- `{id}` the uid of an accessory.
 
 ### Response
 
@@ -217,19 +204,18 @@ Get the sate of an accessory. The state is provided by the controller and varies
 - `404 Not Found` the id does not exist.
 
 
-## Set the state of an accessory
-
-### Definition
-
-`POST /accessories/<id>/state`
+## `POST /accessories/{id}/state`
 
 Set the sate of an accessory. The state is provided by the controller and varies from controller to controller.
 
 ### Arguments
 
+- `{id}` the uid of an accessory.
 **[ Changes per controller! ]**
 
 ### Response
 
 - `204 No Content` the accessory's state has been changed.
 - `404 Not Found` the id does not exist.
+
+
